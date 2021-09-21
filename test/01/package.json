@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run -s clean && npm run test1 && npm run test2 && npm run test3",
+    "test1": "tsc && node build/index.js",
+    "test2": "node src/index.mjs",
+    "test3": "node src/index.js",
+    "clean": "rm -rf build"
+  },
+  "keywords": [],
+  "author": "Abhishek Raj <abhi@raj.me>",
+  "license": "MIT"
+}
