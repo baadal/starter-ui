@@ -1,4 +1,5 @@
 const plugins = [
+  'tailwindcss',
   'postcss-preset-env', // already includes `autoprefixer`
 ];
 
