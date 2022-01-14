@@ -63,8 +63,22 @@ module.exports = (env) => {
     });
   };
 
+  const postcssLoader = () => {
+    return ({
+      loader: 'postcss-loader',
+      options: {
+        postcssOptions: {
+          config: path.resolve(process.cwd(), 'postcss.config.js'),
+        },
+      },
+    });
+  };
+
   const getStyleLoaders = (modules) => {
-    const nextLoaders = ['sass-loader'];
+    const nextLoaders = [
+      postcssLoader(),
+      'sass-loader',
+    ];
     return [
       cssExtractLoader(modules),
       cssLoader(nextLoaders.length, modules),
