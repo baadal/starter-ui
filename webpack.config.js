@@ -45,13 +45,14 @@ module.exports = (env) => {
     });
   };
 
-  const cssLoader = (modules) => {
+  const cssLoader = (nextCount, modules) => {
     if (!modules) {
       return 'css-loader';
     }
     return ({
       loader: 'css-loader',
       options: {
+        importLoaders: nextCount,
         // esModule: true,
         modules: {
           // namedExport: true,
@@ -63,9 +64,11 @@ module.exports = (env) => {
   };
 
   const getStyleLoaders = (modules) => {
+    const nextLoaders = ['sass-loader'];
     return [
       cssExtractLoader(modules),
-      cssLoader(modules),
+      cssLoader(nextLoaders.length, modules),
+      ...nextLoaders,
     ];
   };
 
@@ -111,12 +114,12 @@ module.exports = (env) => {
           exclude: /node_modules/,
         },
         {
-          test: /\.css$/,
+          test: /\.s?css$/,
           use: [...getStyleLoaders()],
-          exclude: /\.module\.css$/,
+          exclude: /\.module\.s?css$/,
         },
         {
-          test: /\.module\.css$/,
+          test: /\.module\.s?css$/,
           use: [...getStyleLoaders(true)],
         },
       ],
