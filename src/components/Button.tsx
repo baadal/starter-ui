@@ -1,9 +1,8 @@
 import React from 'react';
-import styles from './Button.module.scss';
 
 const Button: React.FC<ButtonProps> = props => {
   return (
-    <button type="button" className={`${styles.root} py-1.5 px-3`} style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+    <button type="button" className="text-purple-600 text-base font-bold bg-red-50 py-1.5 px-3 rounded">
       {props.children}
     </button>
   );
