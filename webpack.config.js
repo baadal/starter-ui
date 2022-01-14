@@ -36,6 +36,39 @@ module.exports = (env) => {
     plugins.push(new IgnoreEmitPlugin(/\.css$/));
   }
 
+  const cssExtractLoader = (modules) => {
+    if (!modules) {
+      return MiniCssExtractPlugin.loader;
+    }
+    return ({
+      loader: MiniCssExtractPlugin.loader,
+    });
+  };
+
+  const cssLoader = (modules) => {
+    if (!modules) {
+      return 'css-loader';
+    }
+    return ({
+      loader: 'css-loader',
+      options: {
+        // esModule: true,
+        modules: {
+          // namedExport: true,
+          exportLocalsConvention: 'camelCaseOnly',
+          localIdentName: '[local]_[hash:base64:5]',
+        },
+      }
+    });
+  };
+
+  const getStyleLoaders = (modules) => {
+    return [
+      cssExtractLoader(modules),
+      cssLoader(modules),
+    ];
+  };
+
   const stats = {
     // timings: false,
     hash: false,
@@ -79,10 +112,12 @@ module.exports = (env) => {
         },
         {
           test: /\.css$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
-          ]
+          use: [...getStyleLoaders()],
+          exclude: /\.module\.css$/,
+        },
+        {
+          test: /\.module\.css$/,
+          use: [...getStyleLoaders(true)],
         },
       ],
     },
