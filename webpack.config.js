@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
 
 module.exports = (env) => {
   const outDir = env.ESM ? 'dist/esm' : 'dist/cjs';
@@ -11,6 +13,9 @@ module.exports = (env) => {
     new webpack.EnvironmentPlugin({
       npm_package_version: '',
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
+    }),
+    new MiniCssExtractPlugin({
+      filename: `../styles/index.css`,
     }),
   ];
 
@@ -27,6 +32,8 @@ module.exports = (env) => {
         entryOnly: true,
       })
     );
+
+    plugins.push(new IgnoreEmitPlugin(/\.css$/));
   }
 
   const stats = {
@@ -69,6 +76,13 @@ module.exports = (env) => {
           test: /\.(tsx?|jsx?)$/,
           use: 'babel-loader',
           exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+          ]
         },
       ],
     },
